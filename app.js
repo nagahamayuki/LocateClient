@@ -11,8 +11,8 @@ server.on("request", function(req, res){
 }).listen(process.env.PORT || 8080);
 console.log("server on :8080 ブラウザを表示しなければ動かない");
 
-//var socket = require('socket.io-client')('https://nodelocates.herokuapp.com/');
-var socket = require('socket.io-client')('http://localhost:8000');
+var socket = require('socket.io-client')('https://nodelocates.herokuapp.com/');
+//var socket = require('socket.io-client')('http://localhost:8000');
 
 var name = "長浜";
 var id = 12345;
