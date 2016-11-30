@@ -22,7 +22,10 @@ function successFunc(position){
 function errorFunc(err){
   console.log(err);
 }
-navigator.geolocation.getCurrentPosition(successFunc, errorFunc);
+var optionObj = {
+	"enableHighAccuracy": true
+} ;
+navigator.geolocation.getCurrentPosition(successFunc, errorFunc,  optionObj);
 
 var Timer = setInterval(function(){
   console.log(lat, lat == null);
