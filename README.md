@@ -1,1 +1,3 @@
 # LocateClient
+
+■gitのNodeLocateリポジトリとセットにて使う。
