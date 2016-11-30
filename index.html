@@ -4,17 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Client</title>
 </head>
 <body>
 
 <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
-  var socketio = io.connect('http://localhost:8000');
+var socketio = io.connect('http://localhost:8080');
+/* （２）↑ app.jsをフロントに接続 */
 
-  socketio.on("connected", function(name){
-    console.log(name);
+var lat, lng;
+function successFunc(position){
+  lat = position.coords.latitude;
+  lng = position.coords.longitude;
+}
+function errorFunc(err){
+  console.log(err);
+}
+navigator.geolocation.getCurrentPosition(successFunc, errorFunc);
+
+var Timer = setInterval(function(){
+  console.log(lat, lat == null);
+  socketio.emit("Geolocate", {
+    lats: lat,
+    lngs: lng
   });
+},5000);
+/* （３）↑ app.jsに位置情報を5秒ごとにemit */
 </script>
 </body>
 </html>
