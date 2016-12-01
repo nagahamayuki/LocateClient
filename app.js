@@ -16,7 +16,7 @@ var socket = require('socket.io-client')('https://nodelocates.herokuapp.com/');
 /* リモートとローカルの変更箇所 */
 
 socket.on('connect', function(){
-  console.log("サーバーを立ち上げました");
+  console.log("基Nodeとの接続が完了しました。");
 });
 /* （１）↑ここまででsocket.io client でのデバイス接続 */
 
