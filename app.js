@@ -11,24 +11,29 @@ server.on("request", function(req, res){
 }).listen(process.env.PORT || 8080);
 console.log("server on :8080 ブラウザを表示しなければ動かない");
 
-var socket = require('socket.io-client')('https://nodelocates.herokuapp.com/');
-//var socket = require('socket.io-client')('http://localhost:8000');
+//var socket = require('socket.io-client')('https://nodelocates.herokuapp.com/');
+var socket = require('socket.io-client')('http://localhost:8000');
+/* リモートとローカルの変更箇所 */
 
-var name = "長浜";
-var id = 12345;
 socket.on('connect', function(){
-  console.log("接続できました");
-  socket.emit('setStart', { name: name, id: id });
+  console.log("サーバーを立ち上げました");
 });
 /* （１）↑ここまででsocket.io client でのデバイス接続 */
 
 var io = require("socket.io")(server);
 io.on("connection", function(client){
 
+  client.on("frontSet", function(data){
+    socket.emit("setStart", data);
+  });
+
   client.on("Geolocate", function(data){
-    console.log(data);
     socket.emit("panMaps", data);
   });
   /* （４）↑ 位置情報を受け取る */
+
+  client.on('disconnect', function(){
+    socket.emit('setStart', false);
+  });
 
 });

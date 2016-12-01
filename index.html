@@ -7,12 +7,19 @@
   <title>Client</title>
 </head>
 <body>
+現在位置を送信しています...
 
+<div id="content"></div>
+
+<!-- <script src="./src/bundle.js"></script> -->
 <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
 //var socketio = io.connect('http://localhost:8080');
 var socketio = io.connect();
 /* （２）↑ app.jsをフロントに接続 */
+var userName = "長浜";
+var userId = 12345;
+socketio.emit("frontSet", {id: userId, name: userName });
 
 var lat, lng;
 function successFunc(position){
@@ -28,11 +35,15 @@ var optionObj = {
 navigator.geolocation.getCurrentPosition(successFunc, errorFunc,  optionObj);
 
 var Timer = setInterval(function(){
-  console.log(lat, lat == null);
-  socketio.emit("Geolocate", {
-    lats: lat,
-    lngs: lng
-  });
+  //console.log(lat, lat == null);
+  if((lat == null) === false){
+    //console.log(lat+ "入った");
+    console.log(lat, lng);
+    socketio.emit("Geolocate", {
+      lats: lat,
+      lngs: lng
+    });
+  }
 },5000);
 /* （３）↑ app.jsに位置情報を5秒ごとにemit */
 </script>
