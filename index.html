@@ -5,11 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Client</title>
+
+  <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
+  <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
 </head>
 <body>
 現在位置を送信しています...
 
-<div id="content"></div>
+<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch1">
+  <input type="checkbox" id="switch1" class="mdl-switch__input">
+  <span class="mdl-switch__label"></span>
+</label>
+
+<div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
+  <div class="mdl-snackbar__text"></div>
+  <button class="mdl-snackbar__action" type="button"></button>
+</div>
 
 <!-- <script src="./src/bundle.js"></script> -->
 <script src="/socket.io/socket.io.js"></script>
@@ -31,21 +42,39 @@ function errorFunc(err){
 }
 var optionObj = {
 	"enableHighAccuracy": true
-} ;
-navigator.geolocation.getCurrentPosition(successFunc, errorFunc,  optionObj);
+};
 
-var Timer = setInterval(function(){
-  //console.log(lat, lat == null);
-  if((lat == null) === false){
-    //console.log(lat+ "入った");
-    console.log(lat, lng);
-    socketio.emit("Geolocate", {
-      lats: lat,
-      lngs: lng
-    });
+'use strict';
+window['counter'] = 0;
+var snackbarContainer = document.querySelector('#demo-toast-example');
+
+var Timer;
+document.getElementById("switch1").addEventListener("change", function(e){
+  if(e.target.checked == true){
+    'use strict';
+    var data = {message: '位置情報を送信開始します。'};
+    snackbarContainer.MaterialSnackbar.showSnackbar(data);
+
+    Timer = setInterval(function(){
+      navigator.geolocation.getCurrentPosition(successFunc, errorFunc,  optionObj);
+      if((lat == null) === false){
+        //console.log(lat+ "入った");
+        console.log(lat, lng);
+        socketio.emit("Geolocate", {
+          lats: lat,
+          lngs: lng,
+          name: userName
+        });
+      }
+    },5000);
+    /* （３）↑ app.jsに位置情報を5秒ごとにemit */
+
+  } else if(e.target.checked == false){
+    var data = {message: '位置情報送信をやめます。'};
+    snackbarContainer.MaterialSnackbar.showSnackbar(data);
+    clearInterval(Timer);
   }
-},5000);
-/* （３）↑ app.jsに位置情報を5秒ごとにemit */
+});
 </script>
 </body>
 </html>
