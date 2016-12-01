@@ -12,6 +12,24 @@
 <body>
 現在位置を送信しています...
 
+<br>
+<br><br>
+<br>
+<br>
+<br><br><br>
+<form onsubmit="return false;">
+  <div class="mdl-textfield mdl-js-textfield">
+    <input class="mdl-textfield__input" type="text" id="nameHolder">
+    <label class="mdl-textfield__label" for="nameHolder">名前を入力してね</label>
+  </div>
+  <br>
+  <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" value="お名前を決定">
+</form>
+
+<br>
+<br>
+<br>
+<br><br><br>
 <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch1">
   <input type="checkbox" id="switch1" class="mdl-switch__input">
   <span class="mdl-switch__label"></span>
@@ -74,6 +92,11 @@ document.getElementById("switch1").addEventListener("change", function(e){
     snackbarContainer.MaterialSnackbar.showSnackbar(data);
     clearInterval(Timer);
   }
+});
+
+document.getElementById("nameHolder").addEventListener("change", function(e){
+  console.log(e.target.value);
+  userName = e.target.value;
 });
 </script>
 </body>
